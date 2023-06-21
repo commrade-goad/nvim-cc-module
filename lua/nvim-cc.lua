@@ -1,16 +1,5 @@
 local M = {}
 
-local auto_read = false
-local auto_sync = false
-
-function M.auto_read(input)
-    auto_read = input
-end
-
-function M.auto_sync(input)
-    auto_sync = input
-end
-
 function M.set_compile_command_from_file()
     local current_buffer = vim.api.nvim_get_current_buf()
     local current_file = vim.api.nvim_buf_get_name(current_buffer)
@@ -71,16 +60,14 @@ function M.sync_directory_to_buffer()
     print('cwd : ' .. directory)
 end
 
-if auto_read == true then
-    vim.api.nvim_exec([[
-    autocmd BufEnter * lua require('nvim-cc').set_compile_command_from_file()
-    ]], false)
+if Nvim_cc_auto_read == true then
+    local command = "autocmd BufEnter * lua require('nvim-cc').set_compile_command_from_file()"
+    vim.cmd(command)
 end
 
-if auto_sync == true then
-    vim.api.nvim_exec([[
-    autocmd BufEnter * lua require('nvim-cc').sync_directory_to_buffer()
-    ]], false)
+if Nvim_cc_auto_sync == true then
+local command = "autocmd BufWinEnter * lua require('nvim-cc').sync_directory_to_buffer()"
+vim.cmd(command)
 end
 
 return M
