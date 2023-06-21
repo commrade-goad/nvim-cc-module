@@ -7,8 +7,8 @@ a simple module that enable better compile command stuff for neovim
 
 | Name                            | Desc                                                                                                |
 |---------------------------------|-----------------------------------------------------------------------------------------------------|
-| Nvim_cc_auto_reload             | define this global var before calling require                                                       |
-| Nvim_cc_auto_sync               | define this global var before calling require                                                       |
+| Nvim_cc_auto_reload = bool      | define this global var before calling require                                                       |
+| Nvim_cc_auto_sync = bool        | define this global var before calling require                                                       |
 | set_compile_command_from_file() | automatically read a file called ``nvim-cc.txt`` in the current buffer path with removing ``/src/`` |
 | input_compile_command()         | ask the user about what will the compile command would be                                           |
 | run_compile_command()           | running the compile command specified with vsplit and terminal window                               |
@@ -16,14 +16,17 @@ a simple module that enable better compile command stuff for neovim
 | sync_directory_to_buffer()      | will set the current buffer path to the cwd                                                         |
 
 - Example Usage:
-    - ``$PATH_TO_NVIM_CONF/lua/keys.lua``
+- ``$PATH_TO_NVIM_CONF/lua/keys.lua``
 ```lua
-Auto_reload = false
-Auto_sync = true
+-- assign the var for the module configuration
+Nvim_cc_auto_reload = false
+Nvim_cc_auto_sync = true
+-- load module
 local nvim_cc = require('nvim-cc')
 
 -- your other config
 
+-- some binding
 vim.keymap.set("n", "<leader>cc", function() nvim_cc.input_compile_command() end)
 vim.keymap.set("n", "<leader>cC", function() nvim_cc.run_compile_command() end)
 vim.keymap.set("n", "<leader>cs", function() nvim_cc.run_compile_command_silent() end)
