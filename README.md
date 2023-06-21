@@ -7,7 +7,8 @@ a simple module that enable better compile command stuff for neovim
 
 | Name                            | Desc                                                                                                |
 |---------------------------------|-----------------------------------------------------------------------------------------------------|
-| change_auto_read(boolean)       | change how it will behave when new selected buffer detected (default = false)                       |
+| auto_read(boolean)              | setting for auto read ``nvim-cc.txt`` when new selected buffer detected (default = false)           |
+| auto_read(boolean)              | setting for auto sync dir  when new selected buffer detected (default = false)                      |
 | set_compile_command_from_file() | automatically read a file called ``nvim-cc.txt`` in the current buffer path with removing ``/src/`` |
 | input_compile_command()         | ask the user about what will the compile command would be                                           |
 | run_compile_command()           | running the compile command specified with vsplit and terminal window                               |
@@ -15,7 +16,7 @@ a simple module that enable better compile command stuff for neovim
 | sync_directory_to_buffer()      | will set the current buffer path to the cwd                                                         |
 
 - Example Usage:
-- ``$PATH_TO_NVIM_CONF/lua/keys.lua``
+    - ``$PATH_TO_NVIM_CONF/lua/keys.lua``
 ```lua
 local nvim_cc = require('nvim-cc')
 
@@ -31,7 +32,7 @@ vim.keymap.set("n", "<leader>cS", function() nvim_cc.set_compile_command_from_fi
 
 ```
 
-- ``$PROJECT_PATH/nvim-cc.txt``
+    - ``$PROJECT_PATH/nvim-cc.txt``
 ```sh
 cargo run
 ```

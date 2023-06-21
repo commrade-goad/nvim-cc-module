@@ -1,8 +1,14 @@
 local M = {}
 
-local enable_auto = false
-function M.change_auto_read(input)
-    enable_auto = input
+local auto_read = false
+local auto_sync = false
+
+function M.auto_read(input)
+    auto_read = input
+end
+
+function M.auto_sync(input)
+    auto_sync = input
 end
 
 function M.set_compile_command_from_file()
@@ -65,11 +71,15 @@ function M.sync_directory_to_buffer()
     print('cwd : ' .. directory)
 end
 
-
--- AUTOMATICALLY READ ``nvim-cc.txt`` WHEN CHANGING BUFFER WHICH I DONT LIKE BUT ITS POSSIBLE
-if enable_auto == true then
+if auto_read == true then
     vim.api.nvim_exec([[
     autocmd BufEnter * lua require('nvim-cc').set_compile_command_from_file()
+    ]], false)
+end
+
+if auto_sync == true then
+    vim.api.nvim_exec([[
+    autocmd BufEnter * lua require('nvim-cc').sync_directory_to_buffer()
     ]], false)
 end
 
