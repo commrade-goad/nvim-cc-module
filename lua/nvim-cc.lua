@@ -1,5 +1,15 @@
 local M = {}
 
+if Nvim_cc_auto_read == nil then
+    print("auto_read set to false")
+    Nvim_cc_auto_read = false
+end
+
+if Nvim_cc_auto_sync == nil then
+    print("auto_sync set to false")
+    Nvim_cc_auto_sync = false
+end
+
 function M.set_compile_command_from_file()
     local current_buffer = vim.api.nvim_get_current_buf()
     local current_file = vim.api.nvim_buf_get_name(current_buffer)
