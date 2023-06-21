@@ -62,8 +62,7 @@ function M.sync_directory_to_buffer()
     end
 
     vim.cmd('cd ' .. directory)
-    M.set_compile_command_from_file()
-    print('cwd : ' .. directory .. ' | nvim-cc : ' .. GLOBAL_compile_command)
+    print('cwd : ' .. directory)
 end
 
 
