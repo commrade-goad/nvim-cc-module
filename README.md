@@ -37,7 +37,7 @@ vim.keymap.set("n", "<leader>cS", function() nvim_cc.set_compile_command_from_fi
 
 ```
 
-    - ``$PROJECT_PATH/nvim-cc.txt``
+- ``$PROJECT_PATH/nvim-cc.txt``
 ```sh
 cargo run
 ```

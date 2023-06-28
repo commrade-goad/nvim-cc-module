@@ -1,12 +1,10 @@
 local M = {}
 
 if Nvim_cc_auto_read == nil then
-    print("auto_read set to false")
     Nvim_cc_auto_read = false
 end
 
 if Nvim_cc_auto_sync == nil then
-    print("auto_sync set to false")
     Nvim_cc_auto_sync = false
 end
 
@@ -58,7 +56,10 @@ function M.run_compile_command_silent()
 end
 
 function M.sync_directory_to_buffer()
-        local current_buffer = vim.api.nvim_get_current_buf()
+    if vim.bo.filetype == 'netrw' or vim.b.netrw_bufnr then
+        return
+    end
+    local current_buffer = vim.api.nvim_get_current_buf()
     local current_file = vim.api.nvim_buf_get_name(current_buffer)
     local directory = vim.fn.fnamemodify(current_file, ":h")
 
@@ -76,7 +77,7 @@ if Nvim_cc_auto_read == true then
 end
 
 if Nvim_cc_auto_sync == true then
-local command = "autocmd BufWinEnter * lua require('nvim-cc').sync_directory_to_buffer()"
+local command = "autocmd BufEnter * lua require('nvim-cc').sync_directory_to_buffer()"
 vim.cmd(command)
 end
 
