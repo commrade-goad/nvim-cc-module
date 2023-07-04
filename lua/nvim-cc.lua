@@ -8,6 +8,10 @@ if Nvim_cc_auto_sync == nil then
     Nvim_cc_auto_sync = false
 end
 
+if Nvim_cc_file_name == nil then
+    Nvim_cc_file_name = "nvim-cc.txt"
+end
+
 function M.set_compile_command_from_file()
     local current_buffer = vim.api.nvim_get_current_buf()
     local current_file = vim.api.nvim_buf_get_name(current_buffer)
@@ -17,7 +21,7 @@ function M.set_compile_command_from_file()
         directory = directory:sub(1, -5)
     end
 
-    local file_path = directory .. "/nvim-cc.txt"
+    local file_path = directory .. "/" .. Nvim_cc_file_name
     local success, file_content = pcall(vim.fn.readfile, file_path)
 
     if success and #file_content > 0 then

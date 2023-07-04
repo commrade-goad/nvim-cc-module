@@ -3,12 +3,19 @@ a simple module that enable better compile command stuff for neovim
 
 ## USAGE
 ### CONFIGURATION AND DESC
+
+- Module configuration
+
+| Configuration Var                       | Desc                                                                                                |
+|-----------------------------------------|-----------------------------------------------------------------------------------------------------|
+| Nvim_cc_auto_reload = false (bool)      | define this global var before calling require for auto set_compile_command_from_file()              |
+| Nvim_cc_auto_sync = false (bool)        | define this global var before calling require for auto sync_directory_to_buffer()                   |
+| Nvim_cc_file_name = "nvim-cc.txt" (str) | define this global var before calling require for custom file name to read                          |
+
 - this module will add couple of function    
 
 | Name                            | Desc                                                                                                |
 |---------------------------------|-----------------------------------------------------------------------------------------------------|
-| Nvim_cc_auto_reload = bool      | define this global var before calling require                                                       |
-| Nvim_cc_auto_sync = bool        | define this global var before calling require                                                       |
 | set_compile_command_from_file() | automatically read a file called ``nvim-cc.txt`` in the current buffer path with removing ``/src/`` |
 | input_compile_command()         | ask the user about what will the compile command would be                                           |
 | run_compile_command()           | running the compile command specified with vsplit and terminal window                               |
