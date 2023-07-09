@@ -8,7 +8,7 @@ if Nvim_cc_auto_sync == nil then
     Nvim_cc_auto_sync = false
 end
 
-if Nvim_cc_file_name == nil then
+if Nvim_cc_file_name == nil or Nvim_cc_file_name == "" then
     Nvim_cc_file_name = "nvim-cc.txt"
 end
 
@@ -34,7 +34,12 @@ function M.input_compile_command()
     if GLOBAL_compile_command == nil then
         GLOBAL_compile_command = ""
     end
-    local compile_command = vim.fn.input("Enter Compile command : ", GLOBAL_compile_command)
+    local compile_command = vim.fn.input({
+        prompt = "Enter Compile command : ",
+        default = GLOBAL_compile_command,
+        completion = "shellcmd",
+        wildchar = vim.api.nvim_replace_termcodes("<Tab>", true, false, true),
+    })
     if compile_command ~= "" then
         GLOBAL_compile_command = compile_command
     end
