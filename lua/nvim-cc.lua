@@ -81,13 +81,21 @@ function M.sync_directory_to_buffer()
 end
 
 if Nvim_cc_auto_read == true then
-    local command = "autocmd BufEnter * lua require('nvim-cc').set_compile_command_from_file()"
-    vim.cmd(command)
+    vim.api.nvim_create_autocmd("BufEnter", {
+        group = vim.api.nvim_create_augroup("nvim-cc-autoread", {clear = true}),
+        callback = function ()
+            M.set_compile_command_from_file()
+        end
+    })
 end
 
 if Nvim_cc_auto_sync == true then
-local command = "autocmd BufEnter * lua require('nvim-cc').sync_directory_to_buffer()"
-vim.cmd(command)
+    vim.api.nvim_create_autocmd("BufEnter", {
+        group = vim.api.nvim_create_augroup("nvim-cc-autosync", {clear = true}),
+        callback = function ()
+            M.sync_directory_to_buffer()
+        end
+    })
 end
 
 return M
