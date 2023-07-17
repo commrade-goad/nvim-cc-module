@@ -25,7 +25,15 @@ function M.set_compile_command_from_file()
     local success, file_content = pcall(vim.fn.readfile, file_path)
 
     if success and #file_content > 0 then
-        GLOBAL_compile_command = file_content[1]
+        GLOBAL_compile_command = ""
+        for index in pairs(file_content)
+        do
+            if GLOBAL_compile_command ~= nil and GLOBAL_compile_command ~= "" then
+                GLOBAL_compile_command = GLOBAL_compile_command .. "; " .. file_content[index]
+            else
+                GLOBAL_compile_command = file_content[index]
+            end
+        end
         print("nvim-cc : ".. GLOBAL_compile_command)
     end
 end
