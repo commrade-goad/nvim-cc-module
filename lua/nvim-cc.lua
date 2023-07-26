@@ -29,7 +29,7 @@ function M.set_compile_command_from_file()
         for index in pairs(file_content)
         do
             if GLOBAL_compile_command ~= nil and GLOBAL_compile_command ~= "" then
-                GLOBAL_compile_command = GLOBAL_compile_command .. "; " .. file_content[index]
+                GLOBAL_compile_command = GLOBAL_compile_command .. " && " .. file_content[index]
             else
                 GLOBAL_compile_command = file_content[index]
             end
