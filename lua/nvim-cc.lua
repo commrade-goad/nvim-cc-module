@@ -1,5 +1,9 @@
 local M = {}
 
+if Nvim_cc_split_size == nil then
+    Nvim_cc_split_size = 15
+end
+
 if Nvim_cc_auto_read == nil then
     Nvim_cc_auto_read = false
 end
@@ -58,7 +62,7 @@ function M.run_compile_command()
         print("There is no compile command specified!")
         return
     end
-    local cmd = "split | terminal echo \"> " .. GLOBAL_compile_command .. "\" && " .. GLOBAL_compile_command
+    local cmd = Nvim_cc_split_size .. "split | terminal echo \"> " .. GLOBAL_compile_command .. "\" && " .. GLOBAL_compile_command
     vim.cmd(cmd)
     vim.cmd("startinsert")
 end
