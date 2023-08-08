@@ -12,6 +12,7 @@ a simple module that enable better compile command stuff for neovim
 | Nvim_cc_auto_sync = false (bool)        | define this global var before calling require for auto sync_directory_to_buffer()      |
 | Nvim_cc_file_name = "nvim-cc.txt" (str) | define this global var before calling require for custom file name to read             |
 | Nvim_cc_split_size = 15 (int)           | define this global var before calling require for custom split size                    |
+| Nvim_cc_term_buffn = nil (int)          | this var will be populated with the buffnr when the term buffer is spawned             |
 
 - this module will add couple of function    
 
@@ -35,7 +36,20 @@ local nvim_cc = require('nvim-cc')
 -- your other config
 
 -- some binding
-vim.keymap.set("n", "<leader>cc", function() nvim_cc.input_compile_command() end)
+
+-- run compile command with only 1 term buffer allowed
+vim.keymap.set("n", "<leader>cc", function ()
+    if Nvim_cc_term_buffn == nil or vim.fn.bufexists(Nvim_cc_term_buffn) ~= 1 then
+        nvim_cc.run_compile_command()
+    else
+        print("The compile command buff already running...")
+    end
+end)
+-----------------------------------------------------
+
+-- default behavior
+-- vim.keymap.set("n", "<leader>cc", function() nvim_cc.input_compile_command() end)
+------------------
 vim.keymap.set("n", "<leader>cC", function() nvim_cc.run_compile_command() end)
 vim.keymap.set("n", "<leader>cs", function() nvim_cc.run_compile_command_silent() end)
 vim.keymap.set("n", "<leader>sd", function() nvim_cc.sync_directory_to_buffer() end)

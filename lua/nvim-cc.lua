@@ -1,5 +1,7 @@
 local M = {}
 
+Nvim_cc_term_buffn = nil
+
 if Nvim_cc_split_size == nil then
     Nvim_cc_split_size = 15
 end
@@ -64,6 +66,7 @@ function M.run_compile_command()
     end
     local cmd = Nvim_cc_split_size .. "split | terminal echo \"> " .. GLOBAL_compile_command .. "\" && " .. GLOBAL_compile_command
     vim.cmd(cmd)
+    Nvim_cc_term_buffn = vim.api.nvim_get_current_buf()
     vim.cmd("startinsert")
 end
 
