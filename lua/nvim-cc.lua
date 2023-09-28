@@ -31,51 +31,59 @@ function M.set_compile_command_from_file()
     local success, file_content = pcall(vim.fn.readfile, file_path)
 
     if success and #file_content > 0 then
-        GLOBAL_compile_command = ""
+        Nvim_cc_compile_command = ""
         for index in pairs(file_content)
         do
-            if GLOBAL_compile_command ~= nil and GLOBAL_compile_command ~= "" then
-                GLOBAL_compile_command = GLOBAL_compile_command .. " && " .. file_content[index]
+            if Nvim_cc_compile_command ~= nil and Nvim_cc_compile_command ~= "" then
+                Nvim_cc_compile_command = Nvim_cc_compile_command .. " && " .. file_content[index]
             else
-                GLOBAL_compile_command = file_content[index]
+                Nvim_cc_compile_command = file_content[index]
             end
         end
-        print("nvim-cc : ".. GLOBAL_compile_command)
+        print("nvim-cc : ".. Nvim_cc_compile_command)
     end
 end
 
 function M.input_compile_command()
-    if GLOBAL_compile_command == nil then
-        GLOBAL_compile_command = ""
+    if Nvim_cc_compile_command == nil then
+        Nvim_cc_compile_command = ""
     end
     local compile_command = vim.fn.input({
         prompt = "Enter Compile command : ",
-        default = GLOBAL_compile_command,
+        default = Nvim_cc_compile_command,
         completion = "shellcmd",
         wildchar = vim.api.nvim_replace_termcodes("<Tab>", true, false, true),
     })
     if compile_command ~= "" then
-        GLOBAL_compile_command = compile_command
+        Nvim_cc_compile_command = compile_command
     end
 end
 
 function M.run_compile_command()
-    if GLOBAL_compile_command == "" or GLOBAL_compile_command == nil then
+    if Nvim_cc_compile_command == "" or Nvim_cc_compile_command == nil then
         print("There is no compile command specified!")
         return
     end
-    local cmd = Nvim_cc_split_size .. "split | terminal echo \"> " .. GLOBAL_compile_command .. "\" && " .. GLOBAL_compile_command
+
+    local split_mode
+    if Nvim_cc_vsplit_mode == nil or Nvim_cc_vsplit_mode == false then
+        Nvim_cc_vsplit_mode = false
+        split_mode = "split"
+    else
+        split_mode = "vsplit"
+    end
+    local cmd = Nvim_cc_split_size .. split_mode .. " | terminal echo \"> " .. Nvim_cc_compile_command .. "\" && " .. Nvim_cc_compile_command
     vim.cmd(cmd)
     Nvim_cc_term_buffn = vim.api.nvim_get_current_buf()
     vim.cmd("startinsert")
 end
 
 function M.run_compile_command_silent()
-    if GLOBAL_compile_command == "" or GLOBAL_compile_command == nil then
+    if Nvim_cc_compile_command == "" or Nvim_cc_compile_command == nil then
         print("There is no compile command specified!")
         return
     end
-    local cmd = ":!"..GLOBAL_compile_command
+    local cmd = ":!"..Nvim_cc_compile_command
     vim.cmd(cmd)
 end
 
