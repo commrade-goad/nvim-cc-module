@@ -13,6 +13,7 @@ a simple module that enable better compile command stuff for neovim
 | Nvim_cc_file_name = "nvim-cc.txt" (str) | define this global var before calling require for custom file name to read             |
 | Nvim_cc_split_size = 15 (int)           | define this global var before calling require for custom split size                    |
 | Nvim_cc_term_buffn = nil (int)          | this var will be populated with the buffnr when the term buffer is spawned             |
+| Nvim_cc_vsplit_mode = false (bool)      | this var will decide what split will the cc term came out (vertical/horizontal)        |
 
 - this module will add couple of function    
 
