@@ -24,6 +24,7 @@ a simple module that enable better compile command stuff for neovim
 | run_compile_command()           | running the compile command specified with split and terminal window                                |
 | run_compile_command_silent()    | running the compile command specified with the default ``:!``                                       |
 | sync_directory_to_buffer()      | will set the current buffer path to the cwd                                                         |
+| export_compile_command()        | will save the current compile command to the current pwd                                            |
 
 #### Example Usage:
 ``$PATH_TO_NVIM_CONF/lua/keys.lua``
@@ -55,6 +56,7 @@ vim.keymap.set("n", "<leader>cC", function() nvim_cc.run_compile_command() end)
 vim.keymap.set("n", "<leader>cs", function() nvim_cc.run_compile_command_silent() end)
 vim.keymap.set("n", "<leader>sd", function() nvim_cc.sync_directory_to_buffer() end)
 vim.keymap.set("n", "<leader>cS", function() nvim_cc.set_compile_command_from_file() end)
+vim.keymap.set("n", "<leader>cw", function() nvim_cc.export_compile_command() end)
 
 -- your other config
 

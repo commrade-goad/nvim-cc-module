@@ -103,6 +103,16 @@ function M.sync_directory_to_buffer()
     print('cwd : ' .. directory)
 end
 
+function M.export_compile_command()
+    local file = io.open(Nvim_cc_file_name, "w")
+    if file ~= nil then
+        file:write(Nvim_cc_compile_command)
+        print("Saved " .. Nvim_cc_file_name)
+    else
+        print("Failed to export " .. Nvim_cc_file_name)
+    end
+end
+
 if Nvim_cc_auto_read == true then
     vim.api.nvim_create_autocmd("BufEnter", {
         group = vim.api.nvim_create_augroup("nvim-cc-autoread", {clear = true}),
