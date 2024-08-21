@@ -18,13 +18,20 @@ if Nvim_cc_file_name == nil or Nvim_cc_file_name == "" then
     Nvim_cc_file_name = "nvim-cc.txt"
 end
 
+if Nvim_cc_blacklist_dir_name == nil or Nvim_cc_blacklist_dir_name == "" then
+    Nvim_cc_blacklist_dir_name = {"src"}
+end
+
 function M.set_compile_command_from_file()
     local current_buffer = vim.api.nvim_get_current_buf()
     local current_file = vim.api.nvim_buf_get_name(current_buffer)
     local directory = vim.fn.fnamemodify(current_file, ":h")
 
-    if directory:sub(-4) == "/src" then
-        directory = directory:sub(1, -5)
+    for i = 1, #Nvim_cc_blacklist_dir_name, 1 do
+        local item = Nvim_cc_blacklist_dir_name[i]
+        if directory:sub(-#item -1) == "/" .. item then
+            directory = directory:sub(1, -#item - 2)
+        end
     end
 
     local file_path = directory .. "/" .. Nvim_cc_file_name
@@ -95,8 +102,11 @@ function M.sync_directory_to_buffer()
     local current_file = vim.api.nvim_buf_get_name(current_buffer)
     local directory = vim.fn.fnamemodify(current_file, ":h")
 
-    if directory:sub(-4) == "/src" then
-        directory = directory:sub(1, -5)
+    for i = 1, #Nvim_cc_blacklist_dir_name, 1 do
+        local item = Nvim_cc_blacklist_dir_name[i]
+        if directory:sub(-#item -1) == "/" .. item then
+            directory = directory:sub(1, -#item - 2)
+        end
     end
 
     vim.cmd('cd ' .. directory)
