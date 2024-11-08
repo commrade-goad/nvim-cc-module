@@ -123,6 +123,30 @@ function M.export_compile_command()
     end
 end
 
+function M.jump_to_error_position()
+    local line = vim.fn.getline(".")
+    local file, line_num, col_num = line:match("([^:]+):(%d+):(%d+)")
+    if file and line_num and col_num then
+        -- `0` to get the current one
+        for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+            local buf = vim.api.nvim_win_get_buf(win)
+            if buf ~= Nvim_cc_term_buffn then
+                vim.api.nvim_set_current_win(win)
+                break
+            end
+        end
+
+        -- `0` to get the current one
+        if vim.api.nvim_buf_get_name(0) ~= file then
+            vim.cmd("edit " .. file)
+        end
+
+        vim.api.nvim_win_set_cursor(0, {tonumber(line_num), tonumber(col_num) - 1})
+    else
+        print("nvim-cc : not a valid jump pattern (filename:line:column).")
+    end
+end
+
 if Nvim_cc_auto_read == true then
     vim.api.nvim_create_autocmd("BufEnter", {
         group = vim.api.nvim_create_augroup("nvim-cc-autoread", {clear = true}),

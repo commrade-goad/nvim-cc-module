@@ -26,6 +26,7 @@ a simple module that enable better compile command stuff for neovim
 | run_compile_command_silent()    | running the compile command specified with the default ``:!``                                       |
 | sync_directory_to_buffer()      | will set the current buffer path to the cwd                                                         |
 | export_compile_command()        | will save the current compile command to the current pwd                                            |
+| jump_to_error_position()        | will jump to the file:line:col                                                                      |
 
 #### Example Usage:
 ``$PATH_TO_NVIM_CONF/lua/keys.lua``
