@@ -126,7 +126,11 @@ end
 function M.jump_to_error_position()
     local line = vim.fn.getline(".")
     local file, line_num, col_num = line:match("([^:]+):(%d+):(%d+)")
-    if file and line_num and col_num then
+    if col_num == nil or col_num == "" then
+        file, line_num = line:match("([^:]+):(%d+)")
+        col_num = 1
+    end
+    if file and line_num then
         -- `0` to get the current one
         for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
             local buf = vim.api.nvim_win_get_buf(win)
@@ -137,13 +141,15 @@ function M.jump_to_error_position()
         end
 
         -- `0` to get the current one
+        file = file:match("^%s*(.-)%s*$")
+        file = vim.fn.getcwd() .. "/" .. file
         if vim.api.nvim_buf_get_name(0) ~= file then
             vim.cmd("edit " .. file)
         end
 
         vim.api.nvim_win_set_cursor(0, {tonumber(line_num), tonumber(col_num) - 1})
     else
-        print("nvim-cc : not a valid jump pattern (filename:line:column).")
+        print("nvim-cc : not a valid jump pattern.")
     end
 end
 
