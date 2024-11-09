@@ -142,8 +142,9 @@ function M.jump_to_error_position()
 
         -- `0` to get the current one
         file = file:match("^%s*(.-)%s*$")
-        file = vim.fn.getcwd() .. "/" .. file
-        if vim.api.nvim_buf_get_name(0) ~= file then
+        file = file:match("([A-Za-z%.][A-Za-z0-9/%.]*)")
+        local filec = vim.fn.getcwd() .. "/" .. file
+        if vim.api.nvim_buf_get_name(0) ~= filec then
             vim.cmd("edit " .. file)
         end
 
