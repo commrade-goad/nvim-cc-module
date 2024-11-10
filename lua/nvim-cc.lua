@@ -1,5 +1,7 @@
 local M = {}
 
+ModCwd = nil
+
 Nvim_cc_term_buffn = nil
 
 if Nvim_cc_split_size == nil then
@@ -22,6 +24,10 @@ if Nvim_cc_blacklist_dir_name == nil or Nvim_cc_blacklist_dir_name == "" then
     Nvim_cc_blacklist_dir_name = {"src"}
 end
 
+if Nvim_cc_modcwd == nil or Nvim_cc_modcwd == "" then
+    Nvim_cc_modcwd = ""
+end
+
 function M.set_compile_command_from_file()
     local current_buffer = vim.api.nvim_get_current_buf()
     local current_file = vim.api.nvim_buf_get_name(current_buffer)
@@ -41,11 +47,22 @@ function M.set_compile_command_from_file()
         Nvim_cc_compile_command = ""
         for index in pairs(file_content)
         do
+            if string.sub(file_content[index], 1, 1) == "#" then
+                local filtered_str = string.sub(file_content[index], 2, #file_content[index])
+                filtered_str = filtered_str:match("^%s*(.-)%s*$")
+                local read_func = load(filtered_str)
+                if read_func then
+                    read_func()
+                    Nvim_cc_modcwd = ModCwd
+                end
+                goto continue
+            end
             if Nvim_cc_compile_command ~= nil and Nvim_cc_compile_command ~= "" then
                 Nvim_cc_compile_command = Nvim_cc_compile_command .. " && " .. file_content[index]
             else
                 Nvim_cc_compile_command = file_content[index]
             end
+            ::continue::
         end
         print("nvim-cc : ".. Nvim_cc_compile_command)
     end
@@ -124,6 +141,8 @@ function M.export_compile_command()
 end
 
 function M.jump_to_error_position()
+    local old_cwd = vim.fn.getcwd()
+    local new_cwd = vim.fn.getcwd() .. "/" .. Nvim_cc_modcwd
     local line = vim.fn.getline(".")
     local file, line_num, col_num = line:match("([^:]+):(%d+):(%d+)")
     if col_num == nil or col_num == "" then
@@ -140,15 +159,23 @@ function M.jump_to_error_position()
             end
         end
 
-        -- `0` to get the current one
+        vim.cmd("cd " .. new_cwd)
         file = file:match("^%s*(.-)%s*$")
-        file = file:match("([A-Za-z%.][A-Za-z0-9/%.]*)")
+        file = file:match("([A-Za-z%.][A-Za-z0-9/%.%-%_]*)")
         local filec = vim.fn.getcwd() .. "/" .. file
+        -- `0` to get the current one
         if vim.api.nvim_buf_get_name(0) ~= filec then
+            local file_check = io.open(filec,"r")
+            if file_check == nil then
+                print("nvim-cc : file doesn't exist!.")
+                return
+            end
             vim.cmd("edit " .. file)
+            io.close(file_check)
         end
 
         vim.api.nvim_win_set_cursor(0, {tonumber(line_num), tonumber(col_num) - 1})
+        vim.cmd("cd " .. old_cwd)
     else
         print("nvim-cc : not a valid jump pattern.")
     end

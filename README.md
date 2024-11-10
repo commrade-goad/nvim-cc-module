@@ -15,6 +15,7 @@ a simple module that enable better compile command stuff for neovim
 | Nvim_cc_blacklist_dir_name = {"src"} (table) | define this global var before calling require for blacklisted dir name                 |
 | Nvim_cc_term_buffn = nil (int)               | this var will be populated with the buffnr when the term buffer is spawned             |
 | Nvim_cc_vsplit_mode = false (bool)           | this var will decide what split will the cc term came out (vertical/horizontal)        |
+| Nvim_cc_modcwd                               | this var will be an extra cd steps for jumping                                         |
 
 - this module will add couple of function    
 
@@ -65,9 +66,19 @@ vim.keymap.set("n", "<leader>cw", function() nvim_cc.export_compile_command() en
 
 ```
 
+Example on meson + ninja : 
+
 ``$PROJECT_PATH/nvim-cc.txt``
 ```sh
-cargo run
+# ModCwd = 'build'
+ninja -C build
+```
+
+Simple Example : 
+
+``$PROJECT_PATH/nvim-cc.txt``
+```sh
+cargo build
 ```
 
 ## NOTE
