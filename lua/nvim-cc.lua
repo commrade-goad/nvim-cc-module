@@ -135,6 +135,7 @@ function M.export_compile_command()
     if file ~= nil then
         file:write(Nvim_cc_compile_command)
         print("Saved " .. Nvim_cc_file_name)
+        file:close()
     else
         print("Failed to export " .. Nvim_cc_file_name)
     end
