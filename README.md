@@ -6,16 +6,18 @@ a simple module that enable better compile command stuff for neovim
 
 #### Module configuration
 
-| Configuration Var                            | Desc                                                                                   |
-|----------------------------------------------|----------------------------------------------------------------------------------------|
-| Nvim_cc_auto_reload = false (bool)           | define this global var before calling require for auto set_compile_command_from_file() |
-| Nvim_cc_auto_sync = false (bool)             | define this global var before calling require for auto sync_directory_to_buffer()      |
-| Nvim_cc_file_name = "nvim-cc.txt" (str)      | define this global var before calling require for custom file name to read             |
-| Nvim_cc_split_size = 15 (int)                | define this global var before calling require for custom split size                    |
-| Nvim_cc_blacklist_dir_name = {"src"} (table) | define this global var before calling require for blacklisted dir name                 |
-| Nvim_cc_term_buffn = nil (int)               | this var will be populated with the buffnr when the term buffer is spawned             |
-| Nvim_cc_vsplit_mode = false (bool)           | this var will decide what split will the cc term came out (vertical/horizontal)        |
-| Nvim_cc_modcwd                               | this var will be an extra cd steps for jumping                                         |
+| Configuration Var                            | Desc                                                                                             |
+|----------------------------------------------|--------------------------------------------------------------------------------------------------|
+| Nvim_cc_auto_reload = false (bool)           | define this global var before calling require for auto set_compile_command_from_file()           |
+| Nvim_cc_auto_sync = false (bool)             | define this global var before calling require for auto sync_directory_to_buffer()                |
+| Nvim_cc_file_name = "nvim-cc.txt" (str)      | define this global var before calling require for custom file name to read                       |
+| Nvim_cc_split_size = 15 (int)                | define this global var before calling require for custom split size                              |
+| Nvim_cc_blacklist_dir_name = {"src"} (table) | define this global var before calling require for blacklisted dir name                           |
+| Nvim_cc_term_buffn = nil (int)               | this var will be populated with the buffnr when the term buffer is spawned                       |
+| Nvim_cc_vsplit_mode = false (bool)           | this var will decide what split will the cc term came out (vertical/horizontal)                  |
+| Nvim_cc_modcwd                               | this var will be an extra cd steps for jumping                                                   |
+| Nvim_cc_modcwd                               | this var will be an extra cd steps for jumping                                                   |
+| Nvim_cc_start_insert = true(bool)            | define this global var to make the new compile command buffer automatically going to insert mode |
 
 - this module will add couple of function    
 

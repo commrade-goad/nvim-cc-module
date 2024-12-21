@@ -28,6 +28,10 @@ if Nvim_cc_modcwd == nil or Nvim_cc_modcwd == "" then
     Nvim_cc_modcwd = ""
 end
 
+if Nvim_cc_start_insert == nil then
+   Nvim_cc_start_insert = true
+end
+
 function M.set_compile_command_from_file()
     local current_buffer = vim.api.nvim_get_current_buf()
     local current_file = vim.api.nvim_buf_get_name(current_buffer)
@@ -99,7 +103,9 @@ function M.run_compile_command()
     local cmd = Nvim_cc_split_size .. split_mode .. " | terminal echo \"> " .. Nvim_cc_compile_command .. "\" && " .. Nvim_cc_compile_command
     vim.cmd(cmd)
     Nvim_cc_term_buffn = vim.api.nvim_get_current_buf()
-    vim.cmd("startinsert")
+    if Nvim_cc_start_insert == true then
+        vim.cmd("startinsert")
+    end
 end
 
 function M.run_compile_command_silent()
