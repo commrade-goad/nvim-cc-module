@@ -16,7 +16,6 @@ a simple module that enable better compile command stuff for neovim
 | Nvim_cc_term_buffn = nil (int)               | this var will be populated with the buffnr when the term buffer is spawned                       |
 | Nvim_cc_vsplit_mode = false (bool)           | this var will decide what split will the cc term came out (vertical/horizontal)                  |
 | Nvim_cc_modcwd                               | this var will be an extra cd steps for jumping                                                   |
-| Nvim_cc_modcwd                               | this var will be an extra cd steps for jumping                                                   |
 | Nvim_cc_start_insert = true(bool)            | define this global var to make the new compile command buffer automatically going to insert mode |
 
 - this module will add couple of function    
