@@ -154,9 +154,9 @@ function M.jump_to_error_position()
     local old_cwd = vim.fn.getcwd()
     local new_cwd = vim.fn.getcwd() .. "/" .. Nvim_cc_modcwd
     local line = vim.fn.getline(".")
-    local file, line_num, col_num = line:match("([^:]+):(%d+):(%d+)")
+    local file, line_num, col_num = line:match("(/?[^%s:]+):(%d+):(%d+)")
     if col_num == nil or col_num == "" then
-        file, line_num = line:match("([^:]+):(%d+)")
+        file, line_num = line:match("(/?[^%s:]+):(%d+)")
         col_num = 1
     end
     if file and line_num then
@@ -171,8 +171,11 @@ function M.jump_to_error_position()
 
         vim.cmd("cd " .. new_cwd)
         file = file:match("^%s*(.-)%s*$")
-        file = file:match("([A-Za-z%.][A-Za-z0-9/%.%-%_]*)")
-        local filec = vim.fn.getcwd() .. "/" .. file
+        file = file:match("([/A-Za-z%.][A-Za-z0-9/%.%-%_]*)")
+        local filec = file
+        if string.sub(file, 1, 1) ~= '/' then
+            filec = vim.fn.getcwd() .. "/" .. file
+        end
         -- `0` to get the current one
         if vim.api.nvim_buf_get_name(0) ~= filec then
             local file_check = io.open(filec,"r")
