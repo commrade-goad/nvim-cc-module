@@ -21,7 +21,7 @@ if Nvim_cc_file_name == nil or Nvim_cc_file_name == "" then
 end
 
 if Nvim_cc_blacklist_dir_name == nil or Nvim_cc_blacklist_dir_name == "" then
-    Nvim_cc_blacklist_dir_name = {"src"}
+    Nvim_cc_blacklist_dir_name = { "src" }
 end
 
 if Nvim_cc_modcwd == nil or Nvim_cc_modcwd == "" then
@@ -29,18 +29,16 @@ if Nvim_cc_modcwd == nil or Nvim_cc_modcwd == "" then
 end
 
 if Nvim_cc_start_insert == nil then
-   Nvim_cc_start_insert = true
+    Nvim_cc_start_insert = true
 end
 
 function M.set_compile_command_from_file()
-    local current_buffer = vim.api.nvim_get_current_buf()
-    local current_file = vim.api.nvim_buf_get_name(current_buffer)
-    local directory = vim.fn.fnamemodify(current_file, ":h")
+    local directory = vim.fn.getcwd(0, 0);
 
     for i = 1, #Nvim_cc_blacklist_dir_name, 1 do
         local item = Nvim_cc_blacklist_dir_name[i]
-        if directory:sub(-#item -1) == "/" .. item then
-            directory = directory:sub(1, -#item - 2)
+        if directory:sub(- #item - 1) == "/" .. item then
+            directory = directory:sub(1, - #item - 2)
         end
     end
 
@@ -71,7 +69,7 @@ function M.set_compile_command_from_file()
             end
             ::continue::
         end
-        print("nvim-cc : ".. Nvim_cc_compile_command)
+        print("nvim-cc : " .. Nvim_cc_compile_command)
     end
 end
 
@@ -116,7 +114,7 @@ function M.run_compile_command_silent()
         print("There is no compile command specified!")
         return
     end
-    local cmd = ":!"..Nvim_cc_compile_command
+    local cmd = ":!" .. Nvim_cc_compile_command
     vim.cmd(cmd)
 end
 
@@ -130,8 +128,8 @@ function M.sync_directory_to_buffer()
 
     for i = 1, #Nvim_cc_blacklist_dir_name, 1 do
         local item = Nvim_cc_blacklist_dir_name[i]
-        if directory:sub(-#item -1) == "/" .. item then
-            directory = directory:sub(1, -#item - 2)
+        if directory:sub(- #item - 1) == "/" .. item then
+            directory = directory:sub(1, - #item - 2)
         end
     end
 
@@ -178,7 +176,7 @@ function M.jump_to_error_position()
         end
         -- `0` to get the current one
         if vim.api.nvim_buf_get_name(0) ~= filec then
-            local file_check = io.open(filec,"r")
+            local file_check = io.open(filec, "r")
             if file_check == nil then
                 print("nvim-cc : file `" .. file .. "` doesn't exist!.")
                 vim.cmd("cd " .. old_cwd)
@@ -188,7 +186,7 @@ function M.jump_to_error_position()
             io.close(file_check)
         end
 
-        vim.api.nvim_win_set_cursor(0, {tonumber(line_num), tonumber(col_num) - 1})
+        vim.api.nvim_win_set_cursor(0, { tonumber(line_num), tonumber(col_num) - 1 })
         vim.cmd("cd " .. old_cwd)
     else
         print("nvim-cc : not a valid jump pattern.")
@@ -196,18 +194,18 @@ function M.jump_to_error_position()
 end
 
 if Nvim_cc_auto_read == true then
-    vim.api.nvim_create_autocmd("BufEnter", {
-        group = vim.api.nvim_create_augroup("nvim-cc-autoread", {clear = true}),
-        callback = function ()
+    vim.api.nvim_create_autocmd({ "BufWinEnter", "BufEnter", "VimEnter" }, {
+        group = vim.api.nvim_create_augroup("nvim-cc-autoread", { clear = true }),
+        callback = function()
             M.set_compile_command_from_file()
         end
     })
 end
 
 if Nvim_cc_auto_sync == true then
-    vim.api.nvim_create_autocmd("BufEnter", {
-        group = vim.api.nvim_create_augroup("nvim-cc-autosync", {clear = true}),
-        callback = function ()
+    vim.api.nvim_create_autocmd({ "BufWinEnter", "BufEnter", "VimEnter" }, {
+        group = vim.api.nvim_create_augroup("nvim-cc-autosync", { clear = true }),
+        callback = function()
             M.sync_directory_to_buffer()
         end
     })
